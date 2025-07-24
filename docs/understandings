@@ -1,0 +1,1 @@
+go routines ensure no waiter starvation condition happens, the highest priority is writer lock. hence, when reader lock is first arrived but having writer lock in the queuew waiter will be evaluated.

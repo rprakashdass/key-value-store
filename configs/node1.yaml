@@ -1,0 +1,6 @@
+node_id: "node1"
+http_addr: ":8081"
+raft_addr: ":18081"
+peers:
+  - ":18082"
+  - ":18083"
