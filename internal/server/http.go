@@ -1,28 +1,40 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"sync"
 
+	"key-value-store/internal/config"
 	"key-value-store/internal/store"
 )
 
 // Dependencies for the HTTP server
 type Server struct {
-	kv *store.KVStore
+	kv  *store.KVStore
+	cfg *config.Config
 }
 
 // New Server instance
-func New(kv *store.KVStore) *Server {
-	return &Server{kv: kv}
+func New(kv *store.KVStore, cfg *config.Config) *Server {
+	return &Server{
+		kv:  kv,
+		cfg: cfg,
+	}
 }
 
 // Stars the server
 func (server *Server) Start(addr string) error {
+	// Public API
 	http.HandleFunc("/get", server.handleGet)
 	http.HandleFunc("/set", server.handleSet)
 	http.HandleFunc("/delete", server.handleDelete)
+
+	// Internal Api
+	http.HandleFunc("/replicate", server.handleReplicate)
 
 	log.Printf("Server listening on %s", addr)
 	return http.ListenAndServe(addr, nil)
@@ -61,13 +73,13 @@ func (server *Server) handleSet(w http.ResponseWriter, r *http.Request) {
 		Key   string `json:"key"`
 		Value string `json:"value"`
 	}
-
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
 
 	server.kv.Set(data.Key, data.Value)
+	go server.replicate(store.LogEntry{Op: "set", Key: data.Key, Value: data.Value})
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -85,5 +97,53 @@ func (server *Server) handleDelete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	server.kv.Delete(key)
+	go server.replicate(store.LogEntry{Op: "delete", Key: key})
 	w.WriteHeader(http.StatusOK)
+}
+
+func (server *Server) handleReplicate(w http.ResponseWriter, r *http.Request) {
+	var entry store.LogEntry
+	if err := json.NewDecoder(r.Body).Decode(&entry); err != nil {
+		http.Error(w, "Invalid Json Body", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("Replicating operation %s for %s", entry.Op, entry.Key)
+
+	switch entry.Op {
+	case "set":
+		server.kv.Set(entry.Key, entry.Value)
+	case "delete":
+		server.kv.Delete(entry.Key)
+	default:
+		http.Error(w, "Invalid Operation", http.StatusBadRequest)
+	}
+}
+
+func (server *Server) replicate(entry store.LogEntry) {
+	var wg sync.WaitGroup
+	for _, peerAddr := range server.cfg.Peers {
+		wg.Add(1)
+		go func(addr string) {
+			defer wg.Done()
+
+			url := fmt.Sprintf("http://%s/replicate", addr)
+			jsonData, err := json.Marshal(entry)
+			if err != nil {
+				log.Printf("Failed to marshal replication entry: %v", err)
+				return
+			}
+
+			resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+			if err != nil {
+				log.Printf("Failed to replicate peer %s: %v", peerAddr, err)
+				return
+			}
+			defer resp.Body.Close()
+			if resp.StatusCode != http.StatusOK {
+				log.Printf("Peer %s returned non-Ok status: %s", peerAddr, resp.Status)
+			}
+		}(peerAddr)
+	}
+	wg.Wait()
 }

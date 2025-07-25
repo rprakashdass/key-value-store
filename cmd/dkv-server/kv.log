@@ -1,5 +1,0 @@
-{"op":"set","key":"Hello","value":"Prakash"}
-{"op":"set","key":"persistent","value":"I survive restarts!"}
-{"op":"set","key":"persistent1","value":"I survive restarts!"}
-{"op":"delete","key":"city"}
-{"op":"set","key":"Hello","value":"Prakash"}

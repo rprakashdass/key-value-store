@@ -30,7 +30,7 @@ func main() {
 	kvStore := store.CreateKVStore()
 	log.Println("KVStore initialized successfully")
 
-	server := server.New(kvStore)
+	server := server.New(kvStore, cfg)
 	log.Printf("HTTP server starting on %s", cfg.HTTPAddr)
 	log.Fatal(server.Start(cfg.HTTPAddr))
 }
