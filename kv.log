@@ -1,17 +1,26 @@
-{"op":"set","key":"cluster from n1","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
-{"op":"set","key":"cls","value":"it works!"}
+{"op":"set","key":"dist-kv","value":"complete!"}
+{"op":"set","key":"dist-kv","value":"complete!"}
+{"op":"set","key":"dist-kv","value":"complete!"}
+{"op":"set","key":"dikv","value":"comple"}
+{"op":"set","key":"dikv","value":"comple"}
+{"op":"set","key":"dikv","value":"comple"}
+{"op":"set","key":"dikv","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"d","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"d","value":"comple"}
+{"op":"set","key":"wv","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"l","value":"comple"}
+{"op":"set","key":"d","value":"comple"}
+{"op":"set","key":"q","value":"comple"}
+{"op":"set","key":"q","value":"comple"}

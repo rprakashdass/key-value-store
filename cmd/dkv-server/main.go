@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"key-value-store/internal/config"
+	"key-value-store/internal/raft"
 	"key-value-store/internal/server"
 	"key-value-store/internal/store"
 )
@@ -26,11 +27,10 @@ func main() {
 	}
 	log.Printf("Starting node %s", cfg.NodeID)
 
-	// Create the kv store
 	kvStore := store.CreateKVStore()
-	log.Println("KVStore initialized successfully")
+	raftNode := raft.NewRaftNode(cfg, kvStore)
+	server := server.New(kvStore, raftNode)
 
-	server := server.New(kvStore, cfg)
-	log.Printf("HTTP server starting on %s", cfg.HTTPAddr)
-	log.Fatal(server.Start(cfg.HTTPAddr))
+	server.Start(cfg)
+	select {} // block forever for servers running
 }

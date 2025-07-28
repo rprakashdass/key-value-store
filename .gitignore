@@ -1,0 +1,26 @@
+# Compiled Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# The executable binary from 'go build'
+# The name will match your project directory name.
+dkv-server
+dkv-cli
+
+# Log files
+*.log
+
+# Test coverage files
+*.out
+*.cover
+
+# IDE-specific folders
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db

@@ -2,5 +2,5 @@ node_id: "node1"
 http_addr: ":8081"
 raft_addr: ":18081"
 peers:
-  - "localhost:8082"
-  - "localhost:8083"
+  - "localhost:18082"
+  - "localhost:18083"

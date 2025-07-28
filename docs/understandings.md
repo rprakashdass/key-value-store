@@ -23,6 +23,10 @@ The device that allows multiple signal and send one selected input to the output
 - Channels are conduit which through go routines can sends or receive data.
 - Channels can be created in specific datatype. ex: `chan int, chan string, chan struct etc..`
 
+### channel reciever
+ - `->` is the channel reciever symbol.
+ - It blocks until it recieves a value from the channel on the right hand side
+
 ### UnBuffered Channel
  - It has no capacity, when data recieves that is sent to other goroutines
  - Sender blocks (waits) until a receiver is ready.
@@ -41,5 +45,42 @@ The device that allows multiple signal and send one selected input to the output
 
 
 # RAFT
-    - It is a consensus algorithm used in distributed systems to ensure every servers agrees to same state
-    - RAFT = Reliable and Understandable and Consisten protocol
+- It is a consensus algorithm used in distributed systems to ensure every servers agrees to same state
+- RAFT = Reliable and Understandable and Consisten protocol
+- Raft achieves distributed synchronization via protocol, not shared memory
+
+```
+Process 1 (Node1)                 Process 2 (Node2)                 Process 3 (Node3)
+-------------------              -------------------              -------------------
+| RaftNode {         |           | RaftNode {         |           | RaftNode {         |
+|   mutex 🔒         |           |   mutex 🔒         |           |   mutex 🔒         |
+|   state            |           |   state            |           |   state            |
+|   term             |           |   term             |           |   term             |
+-------------------              -------------------              -------------------
+
+↑ many goroutines here     ↑ many goroutines here        ↑ many goroutines here
+share this RaftNode        share this RaftNode           share this RaftNode
+```
+
+## Heartbeat in Raft
+In Raft, a heartbeat is a periodic signal sent by the Leader node to all Follower nodes to:
+- Maintain authority (tell followers “I’m still the leader”).
+- Prevent followers from starting a new election.
+
+### terms
+- is like a season a leader can serve
+- it will eventually increase by 1
+
+### iota
+ - In Go, iota is a predeclared identifier used in constant declarations to generate successive untyped integer values, starting from 0.
+ ```
+const (
+    A = iota // 0
+    B = iota // 1
+    C = iota // 2
+)
+```
+
+## RPC
+- Remote Procedural Call
+- means calling a function on another machine like calling it as a local function
