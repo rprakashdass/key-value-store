@@ -85,7 +85,7 @@ func (c *Client) request(method, path string, payload io.Reader) ([]byte, error)
 }
 
 func main() {
-	nodesFlag := flag.String("nodes", "localhost:8081,localhost:8082,localhost:8083", "Comma-separated list of cluster API nodes")
+	nodesFlag := flag.String("nodes", "localhost:8081,localhost:8082,localhost:8083,localhost:8084,localhost:8085", "Comma-separated list of cluster API nodes")
 	flag.Parse()
 
 	if flag.NArg() < 2 {
