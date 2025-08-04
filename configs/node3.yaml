@@ -4,3 +4,5 @@ raft_addr: ":18083"
 peers:
   - "localhost:18081"
   - "localhost:18082"
+  - "localhost:18084"
+  - "localhost:18085"

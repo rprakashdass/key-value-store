@@ -1,0 +1,8 @@
+node_id: "node5"
+http_addr: ":8085"
+raft_addr: ":18085"
+peers:
+  - "localhost:18081"
+  - "localhost:18082"
+  - "localhost:18083"
+  - "localhost:18084"
